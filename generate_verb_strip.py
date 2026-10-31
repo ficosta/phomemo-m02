@@ -1,7 +1,8 @@
 """
 Gerador de Tiras de Estudo de Verbos em Espanhol para Phomemo M02
-Versão COMPLETA com as 6 PESSOAS GRAMATICAIS (incluindo Vosotros).
-Compacta e sem desperdício de papel.
+- Português em PRETO SÓLIDO (sem pontilhado de cinza para máxima nitidez térmica).
+- Frases de demonstração para os 3 tempos (Presente, Passado, Futuro).
+- 6 Pessoas Gramaticais.
 Largura: 384px (203 DPI)
 """
 
@@ -12,10 +13,16 @@ WIDTH = 384
 
 FONT_REG = r"C:\Windows\Fonts\segoeui.ttf"
 FONT_BOLD = r"C:\Windows\Fonts\segoeuib.ttf"
+FONT_ITALIC = r"C:\Windows\Fonts\segoeuii.ttf"
 
-def get_font(size: int, bold: bool = False):
+def get_font(size: int, bold: bool = False, italic: bool = False):
     try:
-        font_path = FONT_BOLD if bold else FONT_REG
+        if bold:
+            font_path = FONT_BOLD
+        elif italic:
+            font_path = FONT_ITALIC
+        else:
+            font_path = FONT_REG
         return ImageFont.truetype(font_path, size)
     except Exception:
         return ImageFont.load_default()
@@ -49,8 +56,11 @@ VERBS_DATA = {
             ("vosotros hablaréis", "vocês falarão [vós]"),
             ("ellos hablarán", "eles falarão")
         ],
-        "example_es": "Ayer hablé con María.",
-        "example_pt": "Ontem falei com a Maria."
+        "examples": [
+            ("PRES", "Hablo español todos los días.", "Falo espanhol todos os dias."),
+            ("PAS",  "Ayer hablé con María.", "Ontem falei com a Maria."),
+            ("FUT",  "Mañana hablaré con el jefe.", "Amanhã falarei com o chefe.")
+        ]
     },
     "comer": {
         "verb": "COMER",
@@ -80,8 +90,11 @@ VERBS_DATA = {
             ("vosotros comeréis", "vocês comerão [vós]"),
             ("ellos comerán", "eles comerão")
         ],
-        "example_es": "Mañana comeremos paella.",
-        "example_pt": "Amanhã comeremos paella."
+        "examples": [
+            ("PRES", "Como frutas por la mañana.", "Como frutas pela manhã."),
+            ("PAS",  "Ayer comí una paella increíble.", "Ontem comi uma paella incrível."),
+            ("FUT",  "Mañana comeremos juntos.", "Amanhã comeremos juntos.")
+        ]
     },
     "vivir": {
         "verb": "VIVIR",
@@ -111,8 +124,11 @@ VERBS_DATA = {
             ("vosotros viviréis", "vocês morarão [vós]"),
             ("ellos vivirán", "eles morarão")
         ],
-        "example_es": "Yo viví dos años en Madrid.",
-        "example_pt": "Eu morei dois anos em Madri."
+        "examples": [
+            ("PRES", "Ahora vivo en São Paulo.", "Agora moro em São Paulo."),
+            ("PAS",  "Viví dos años en Madrid.", "Morei dois anos em Madri."),
+            ("FUT",  "El próximo año viviré afuera.", "No próximo ano morarei fora.")
+        ]
     }
 }
 
@@ -138,12 +154,12 @@ def draw_mini_house_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
 def generate_verb_strip(verb_key: str) -> Image.Image:
     data = VERBS_DATA[verb_key]
     
-    canvas_h = 1400
+    canvas_h = 1600
     img = Image.new('RGB', (WIDTH, canvas_h), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
 
     y = 6
-    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(140, 140, 140), anchor="mm", font=get_font(11))
+    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(0, 0, 0), anchor="mm", font=get_font(11))
     y += 12
 
     card_start_y = y
@@ -151,12 +167,12 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
     # Barra de Título Superior Integrada
     draw.rectangle([(6, y), (WIDTH - 6, y + 54)], fill=(0, 0, 0))
     draw.text((18, y + 27), data["verb"], fill=(255, 255, 255), anchor="lm", font=get_font(32, bold=True))
-    draw.text((WIDTH - 18, y + 27), f"({data['pt']})", fill=(230, 230, 230), anchor="rm", font=get_font(17, bold=True))
+    draw.text((WIDTH - 18, y + 27), f"({data['pt']})", fill=(255, 255, 255), anchor="rm", font=get_font(17, bold=True))
     y += 58
 
-    # Faixa de subtítulo + Ícone
-    draw.rectangle([(6, y), (WIDTH - 6, y + 32)], fill=(245, 245, 245))
-    draw.text((18, y + 16), "6 PESSOAS GRAMATICAIS", fill=(80, 80, 80), anchor="lm", font=get_font(11, bold=True))
+    # Subtítulo + Ícone
+    draw.rectangle([(6, y), (WIDTH - 6, y + 32)], fill=(240, 240, 240))
+    draw.text((18, y + 16), "6 PESSOAS : 3 TEMPOS", fill=(0, 0, 0), anchor="lm", font=get_font(12, bold=True))
     
     if data["icon"] == "speech":
         draw_mini_speech_icon(draw, WIDTH - 52, y + 4)
@@ -166,43 +182,61 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
         draw_mini_house_icon(draw, WIDTH - 52, y + 4)
     y += 36
 
-    # 4. Blocos com as 6 Pessoas
+    # Blocos de Conjugação
     def render_tense_block(cur_y: int, title_es: str, title_pt: str, conjugations: list) -> int:
-        draw.rectangle([(6, cur_y), (WIDTH - 6, cur_y + 24)], fill=(40, 40, 40))
+        draw.rectangle([(6, cur_y), (WIDTH - 6, cur_y + 24)], fill=(0, 0, 0))
         draw.text((16, cur_y + 12), title_es, fill=(255, 255, 255), anchor="lm", font=get_font(13, bold=True))
-        draw.text((WIDTH - 16, cur_y + 12), f"[{title_pt}]", fill=(210, 210, 210), anchor="rm", font=get_font(12))
+        draw.text((WIDTH - 16, cur_y + 12), f"[{title_pt}]", fill=(255, 255, 255), anchor="rm", font=get_font(12, bold=True))
         cur_y += 26
 
         for idx, (es, pt) in enumerate(conjugations):
             if idx % 2 == 1:
-                draw.rectangle([(6, cur_y - 1), (WIDTH - 6, cur_y + 24)], fill=(244, 244, 244))
+                draw.rectangle([(6, cur_y - 1), (WIDTH - 6, cur_y + 24)], fill=(240, 240, 240))
             
-            # Espanhol (16pt Bold)
+            # Espanhol: 16pt Bold (Preto sólido)
             draw.text((16, cur_y + 11), es, fill=(0, 0, 0), anchor="lm", font=get_font(16, bold=True))
-            # Português (14pt)
-            draw.text((WIDTH - 16, cur_y + 11), f"-> {pt}", fill=(60, 60, 60), anchor="rm", font=get_font(14))
+            # Português: 14pt Regular (Preto sólido! Sem pontilhado)
+            draw.text((WIDTH - 16, cur_y + 11), f"-> {pt}", fill=(0, 0, 0), anchor="rm", font=get_font(14))
             cur_y += 24
             
         return cur_y + 4
 
-    # 1. Presente
     y = render_tense_block(y, "1. PRESENTE", "Presente", data["present"])
-    # 2. Passado
     y = render_tense_block(y, "2. PASSADO", "Pret. Indefinido", data["past"])
-    # 3. Futuro
     y = render_tense_block(y, "3. FUTURO", "Futuro Simples", data["future"])
 
-    # 5. Frase de Exemplo no cotidiano
-    draw.rectangle([(6, y), (WIDTH - 6, y + 48)], fill=(245, 245, 245), outline=(0, 0, 0), width=1)
-    draw.text((16, y + 14), f"[ES]  {data['example_es']}", fill=(0, 0, 0), anchor="lm", font=get_font(14, bold=True))
-    draw.text((16, y + 34), f"[PT]  {data['example_pt']}", fill=(70, 70, 70), anchor="lm", font=get_font(13))
-    y += 52
+    # Seção com 3 Frases de Demonstração (Presente, Passado e Futuro)
+    draw.rectangle([(6, y), (WIDTH - 6, y + 24)], fill=(0, 0, 0))
+    draw.text((16, y + 12), "FRASES DE DEMONSTRAÇÃO", fill=(255, 255, 255), anchor="lm", font=get_font(12, bold=True))
+    y += 26
+
+    # Caixa dos exemplos
+    for idx, (tense, es_phrase, pt_phrase) in enumerate(data["examples"]):
+        bg_col = (255, 255, 255) if idx % 2 == 0 else (244, 244, 244)
+        box_h = 44
+        draw.rectangle([(6, y), (WIDTH - 6, y + box_h)], fill=bg_col)
+        
+        # Tag do tempo (ex: PRES, PAS, FUT)
+        draw.rounded_rectangle([(14, y + 6), (56, y + 24)], radius=4, fill=(0, 0, 0))
+        draw.text((35, y + 15), tense, fill=(255, 255, 255), anchor="mm", font=get_font(10, bold=True))
+        
+        # Frase em Espanhol (Negrito preto sólido)
+        draw.text((64, y + 15), es_phrase, fill=(0, 0, 0), anchor="lm", font=get_font(13, bold=True))
+        # Tradução em Português (Preto sólido)
+        draw.text((64, y + 33), f"-> {pt_phrase}", fill=(0, 0, 0), anchor="lm", font=get_font(12))
+        
+        y += box_h
+        if idx < len(data["examples"]) - 1:
+            draw.line([(14, y), (WIDTH - 14, y)], fill=(210, 210, 210), width=1)
+
+    y += 4
 
     # Moldura externa em volta do cartão inteiro
     draw.rectangle([(6, card_start_y), (WIDTH - 6, y)], outline=(0, 0, 0), width=3)
     y += 10
 
-    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(140, 140, 140), anchor="mm", font=get_font(11))
+    # Linha de corte final
+    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(0, 0, 0), anchor="mm", font=get_font(11))
     y += 10
 
     return img.crop((0, 0, WIDTH, y))
