@@ -59,30 +59,46 @@ class PhomemoM02:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
-    def _convert_to_raster(self, img: Image.Image) -> bytes:
-        # Redimensiona mantendo a proporção para 384 pixels
+    def print_image(self, image_or_path):
+        """Imprime uma imagem com controle de fluxo para não estourar o buffer da impressora."""
+        if isinstance(image_or_path, (str, Path)):
+            img = Image.open(image_or_path)
+        else:
+            img = image_or_path
+
+        if not self.ser or not self.ser.is_open:
+            self.connect()
+
+        # Redimensiona proporcionalmente para 384 pixels se necessário
         if img.width != WIDTH_DOTS:
             new_height = int(img.height * (WIDTH_DOTS / img.width))
             img = img.resize((WIDTH_DOTS, new_height), Image.Resampling.LANCZOS)
-        
-        # Converte para preto e branco com dithering Floyd-Steinberg
+
         bw = img.convert('L').convert('1', dither=Image.Dither.FLOYDSTEINBERG)
         width, height = bw.size
         pixels = bw.load()
-        
-        payload = bytearray()
-        payload.extend(b'\x1b\x40')        # ESC @ (Reset)
-        payload.extend(b'\x1f\x11\x02\x04') # Densidade Phomemo
-        
-        CHUNK_ROWS = 128
+
+        # Reset e inicialização
+        init_cmd = bytearray()
+        init_cmd.extend(b'\x1b\x40')        # ESC @
+        init_cmd.extend(b'\x1f\x11\x02\x04') # Densidade Phomemo
+        self.ser.write(init_cmd)
+        self.ser.flush()
+        time.sleep(0.05)
+
+        # Transmissão em blocos de 32 linhas para respeitar o buffer de memória da M02
+        CHUNK_ROWS = 32
         for start_y in range(0, height, CHUNK_ROWS):
             block_height = min(CHUNK_ROWS, height - start_y)
-            payload.extend(b'\x1d\x76\x30\x00')
-            payload.append(BYTES_PER_LINE & 0xFF)
-            payload.append((BYTES_PER_LINE >> 8) & 0xFF)
-            payload.append(block_height & 0xFF)
-            payload.append((block_height >> 8) & 0xFF)
+            block_data = bytearray()
             
+            # Cabeçalho ESC/POS GS v 0
+            block_data.extend(b'\x1d\x76\x30\x00')
+            block_data.append(BYTES_PER_LINE & 0xFF)
+            block_data.append((BYTES_PER_LINE >> 8) & 0xFF)
+            block_data.append(block_height & 0xFF)
+            block_data.append((block_height >> 8) & 0xFF)
+
             for y in range(start_y, start_y + block_height):
                 for byte_idx in range(BYTES_PER_LINE):
                     byte_val = 0
@@ -90,32 +106,23 @@ class PhomemoM02:
                         x = byte_idx * 8 + bit_idx
                         if x < width and pixels[x, y] == 0:
                             byte_val |= (1 << (7 - bit_idx))
-                    payload.append(byte_val)
-                    
-        # Feed de avanço
-        payload.extend(b'\x1b\x64\x06')
-        payload.extend(b'\x1f\x11\x08')
-        payload.extend(b'\n\n\n')
-        return bytes(payload)
+                    block_data.append(byte_val)
 
-    def _send_payload(self, data: bytes):
-        if not self.ser or not self.ser.is_open:
-            self.connect()
-        chunk_size = 256
-        for i in range(0, len(data), chunk_size):
-            self.ser.write(data[i:i + chunk_size])
-            time.sleep(0.015)
+            self.ser.write(block_data)
+            self.ser.flush()
+            # Pausa para o cabeçote térmico processar as 32 linhas sem estourar o buffer
+            time.sleep(0.22)
+
+        # Feed de avanço final
+        feed_cmd = bytearray()
+        feed_cmd.extend(b'\x1b\x64\x06')
+        feed_cmd.extend(b'\x1f\x11\x08')
+        feed_cmd.extend(b'\n\n\n')
+        self.ser.write(feed_cmd)
         self.ser.flush()
-        time.sleep(2.0)
 
-    def print_image(self, image_or_path):
-        """Imprime uma imagem (caminho de arquivo ou PIL Image)."""
-        if isinstance(image_or_path, (str, Path)):
-            img = Image.open(image_or_path)
-        else:
-            img = image_or_path
-        data = self._convert_to_raster(img)
-        self._send_payload(data)
+        # Aguarda a finalização mecânica antes de desconectar
+        time.sleep(3.5)
 
     def print_text(self, text: str, font_size: int = 22, title: Optional[str] = None):
         """Formata e imprime um texto com quebra automática de linha."""

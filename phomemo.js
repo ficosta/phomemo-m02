@@ -77,11 +77,11 @@ class PhomemoM02 {
   /**
    * Converte uma imagem (caminho ou buffer) em comando ESC/POS raster com Floyd-Steinberg dithering
    */
-  async _imageToRaster(imageInput) {
-    // Redimensiona proporcionalmente para 384px de largura e extrai escala de cinza raw
+  async printImage(imageInput) {
+    await this.connect();
+
     const image = sharp(imageInput);
     const metadata = await image.metadata();
-
     const targetHeight = Math.round((metadata.height * WIDTH_DOTS) / metadata.width);
     const { data: rawPixels } = await image
       .resize(WIDTH_DOTS, targetHeight)
@@ -92,7 +92,7 @@ class PhomemoM02 {
     const width = WIDTH_DOTS;
     const height = targetHeight;
 
-    // Algoritmo Floyd-Steinberg Dithering
+    // Floyd-Steinberg
     const dither = new Float32Array(rawPixels);
     const binary = new Uint8Array(width * height);
 
@@ -101,8 +101,7 @@ class PhomemoM02 {
         const idx = y * width + x;
         const oldVal = dither[idx];
         const newVal = oldVal < 128 ? 0 : 255;
-        binary[idx] = newVal === 0 ? 1 : 0; // 1 = queima (preto), 0 = branco
-
+        binary[idx] = newVal === 0 ? 1 : 0;
         const error = oldVal - newVal;
         if (x + 1 < width) dither[idx + 1] += error * (7 / 16);
         if (x - 1 >= 0 && y + 1 < height) dither[(y + 1) * width + (x - 1)] += error * (3 / 16);
@@ -111,24 +110,21 @@ class PhomemoM02 {
       }
     }
 
-    const payload = [];
+    // Inicialização
+    await this._writeChunk(Buffer.from([0x1b, 0x40, 0x1f, 0x11, 0x02, 0x04]));
+    await new Promise((r) => setTimeout(r, 50));
 
-    // Reset ESC @
-    payload.push(0x1b, 0x40);
-    // Densidade Phomemo
-    payload.push(0x1f, 0x11, 0x02, 0x04);
-
-    // Blocos GS v 0
-    const CHUNK_ROWS = 128;
+    // Envio em blocos de 32 linhas para respeitar o buffer de RAM da Phomemo
+    const CHUNK_ROWS = 32;
     for (let startY = 0; startY < height; startY += CHUNK_ROWS) {
       const blockHeight = Math.min(CHUNK_ROWS, height - startY);
+      const blockData = [];
 
-      // Header 1D 76 30 00 [WL] [WH] [HL] [HH]
-      payload.push(0x1d, 0x76, 0x30, 0x00);
-      payload.push(BYTES_PER_LINE & 0xff);
-      payload.push((BYTES_PER_LINE >> 8) & 0xff);
-      payload.push(blockHeight & 0xff);
-      payload.push((blockHeight >> 8) & 0xff);
+      blockData.push(0x1d, 0x76, 0x30, 0x00);
+      blockData.push(BYTES_PER_LINE & 0xff);
+      blockData.push((BYTES_PER_LINE >> 8) & 0xff);
+      blockData.push(blockHeight & 0xff);
+      blockData.push((blockHeight >> 8) & 0xff);
 
       for (let y = startY; y < startY + blockHeight; y++) {
         for (let byteIdx = 0; byteIdx < BYTES_PER_LINE; byteIdx++) {
@@ -139,43 +135,26 @@ class PhomemoM02 {
               byteVal |= 1 << (7 - bitIdx);
             }
           }
-          payload.push(byteVal);
+          blockData.push(byteVal);
         }
       }
+
+      await this._writeChunk(Buffer.from(blockData));
+      await new Promise((r) => setTimeout(r, 220));
     }
 
     // Feed de avanço
-    payload.push(0x1b, 0x64, 0x06);
-    payload.push(0x1f, 0x11, 0x08);
-    payload.push(0x0a, 0x0a, 0x0a);
-
-    return Buffer.from(payload);
+    await this._writeChunk(Buffer.from([0x1b, 0x64, 0x06, 0x1f, 0x11, 0x08, 0x0a, 0x0a, 0x0a]));
+    await new Promise((r) => setTimeout(r, 3500));
   }
 
-  /**
-   * Envia dados em chunks com controle de fluxo
-   */
-  async _sendData(buffer) {
-    await this.connect();
-    const chunkSize = 256;
-
-    for (let i = 0; i < buffer.length; i += chunkSize) {
-      const chunk = buffer.subarray(i, i + chunkSize);
-      await new Promise((resolve, reject) => {
-        this.port.write(chunk, (err) => {
-          if (err) return reject(err);
-          this.port.drain(resolve);
-        });
+  async _writeChunk(buf) {
+    return new Promise((resolve, reject) => {
+      this.port.write(buf, (err) => {
+        if (err) return reject(err);
+        this.port.drain(resolve);
       });
-      await new Promise((r) => setTimeout(r, 15));
-    }
-
-    await new Promise((r) => setTimeout(r, 2000));
-  }
-
-  async printImage(imageInput) {
-    const rasterData = await this._imageToRaster(imageInput);
-    await this._sendData(rasterData);
+    });
   }
 
   async printText(text, options = {}) {

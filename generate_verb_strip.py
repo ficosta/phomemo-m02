@@ -1,6 +1,6 @@
 """
 Catálogo Completo dos 15 Verbos Mais Usados em Espanhol + 3 Modelos Regulares
-Gerador de Tiras Térmicas (Phomemo M02 - 384px)
+Gerador de Tiras Térmicas com FONTES GIGANTES (Phomemo M02 - 384px)
 """
 
 from PIL import Image, ImageDraw, ImageFont
@@ -19,7 +19,6 @@ def get_font(size: int, bold: bool = False):
         return ImageFont.load_default()
 
 VERBS_DATA = {
-    # 1. SER
     "ser": {
         "verb": "SER",
         "pt": "SER",
@@ -27,25 +26,25 @@ VERBS_DATA = {
         "present": [
             ("yo soy", "eu sou"),
             ("tú eres", "você é"),
-            ("él / ella es", "ele / ela é"),
-            ("nosotros somos", "nós somos"),
-            ("vosotros sois", "vocês são [vós sois]"),
+            ("él/ella es", "ele / ela é"),
+            ("nos. somos", "nós somos"),
+            ("vos. sois", "vocês são [vós sois]"),
             ("ellos son", "eles são")
         ],
         "past": [
             ("yo fui", "eu fui"),
             ("tú fuiste", "você foi"),
-            ("él / ella fue", "ele / ela foi"),
-            ("nosotros fuimos", "nós fomos"),
-            ("vosotros fuisteis", "vocês foram [vós fostes]"),
+            ("él/ella fue", "ele / ela foi"),
+            ("nos. fuimos", "nós fomos"),
+            ("vos. fuisteis", "vocês foram [vós fostes]"),
             ("ellos fueron", "eles foram")
         ],
         "future": [
             ("yo seré", "eu serei"),
             ("tú serás", "você será"),
-            ("él / ella será", "ele / ela será"),
-            ("nosotros seremos", "nós seremos"),
-            ("vosotros seréis", "vocês serão [vós sereis]"),
+            ("él/ella será", "ele / ela será"),
+            ("nos. seremos", "nós seremos"),
+            ("vos. seréis", "vocês serão [vós sereis]"),
             ("ellos serán", "eles serão")
         ],
         "examples": [
@@ -54,7 +53,6 @@ VERBS_DATA = {
             ("FUT",  "Mañana será mejor.", "Amanhã será melhor.")
         ]
     },
-    # 2. ESTAR
     "estar": {
         "verb": "ESTAR",
         "pt": "ESTAR",
@@ -62,25 +60,25 @@ VERBS_DATA = {
         "present": [
             ("yo estoy", "eu estou"),
             ("tú estás", "você está"),
-            ("él / ella está", "ele / ela está"),
-            ("nosotros estamos", "nós estamos"),
-            ("vosotros estáis", "vocês estão [vós estais]"),
+            ("él/ella está", "ele / ela está"),
+            ("nos. estamos", "nós estamos"),
+            ("vos. estáis", "vocês estão [vós estais]"),
             ("ellos están", "eles estão")
         ],
         "past": [
             ("yo estuve", "eu estive"),
             ("tú estuviste", "você esteve"),
-            ("él / ella estuvo", "ele / ela esteve"),
-            ("nosotros estuvimos", "nós estivemos"),
-            ("vosotros estuvisteis", "vocês estiveram"),
+            ("él/ella estuvo", "ele / ela esteve"),
+            ("nos. estuvimos", "nós estivemos"),
+            ("vos. estuvisteis", "vocês estiveram"),
             ("ellos estuvieron", "eles estiveram")
         ],
         "future": [
             ("yo estaré", "eu estarei"),
             ("tú estarás", "você estará"),
-            ("él / ella estará", "ele / ela estará"),
-            ("nosotros estaremos", "nós estaremos"),
-            ("vosotros estaréis", "vocês estarão"),
+            ("él/ella estará", "ele / ela estará"),
+            ("nos. estaremos", "nós estaremos"),
+            ("vos. estaréis", "vocês estarão"),
             ("ellos estarán", "eles estarão")
         ],
         "examples": [
@@ -89,7 +87,6 @@ VERBS_DATA = {
             ("FUT",  "Estaré allí a las ocho.", "Estarei lá às oito.")
         ]
     },
-    # 3. TENER
     "tener": {
         "verb": "TENER",
         "pt": "TER",
@@ -97,34 +94,33 @@ VERBS_DATA = {
         "present": [
             ("yo tengo", "eu tenho"),
             ("tú tienes", "você tem"),
-            ("él / ella tiene", "ele / ela tem"),
-            ("nosotros tenemos", "nós temos"),
-            ("vosotros tenéis", "vocês têm [vós tendes]"),
+            ("él/ella tiene", "ele / ela tem"),
+            ("nos. tenemos", "nós temos"),
+            ("vos. tenéis", "vocês têm [vós tendes]"),
             ("ellos tienen", "eles têm")
         ],
         "past": [
             ("yo tuve", "eu tive"),
             ("tú tuviste", "você teve"),
-            ("él / ella tuvo", "ele / ela teve"),
-            ("nosotros tuvimos", "nós tivemos"),
-            ("vosotros tuvisteis", "vocês tiveram"),
+            ("él/ella tuvo", "ele / ela teve"),
+            ("nos. tuvimos", "nós tivemos"),
+            ("vos. tuvisteis", "vocês tiveram"),
             ("ellos tuvieron", "eles tiveram")
         ],
         "future": [
             ("yo tendré", "eu terei"),
             ("tú tendrás", "você terá"),
-            ("él / ella tendrá", "ele / ela terá"),
-            ("nosotros tendremos", "nós teremos"),
-            ("vosotros tendréis", "vocês terão"),
+            ("él/ella tendrá", "ele / ela terá"),
+            ("nos. tendremos", "nós teremos"),
+            ("vos. tendréis", "vocês terão"),
             ("ellos tendrán", "eles terão")
         ],
         "examples": [
             ("PRES", "Tengo muchas ganas de ir.", "Tenho muita vontade de ir."),
             ("PAS",  "Tuve suerte ayer.", "Tive sorte ontem."),
-            ("FUT",  "Tendré tiempo el fin de semana.", "Terei tempo no fim de semana.")
+            ("FUT",  "Tendré tiempo luego.", "Terei tempo depois.")
         ]
     },
-    # 4. HACER
     "hacer": {
         "verb": "HACER",
         "pt": "FAZER",
@@ -132,25 +128,25 @@ VERBS_DATA = {
         "present": [
             ("yo hago", "eu faço"),
             ("tú haces", "você faz"),
-            ("él / ella hace", "ele / ela faz"),
-            ("nosotros hacemos", "nós fazemos"),
-            ("vosotros hacéis", "vocês fazem"),
+            ("él/ella hace", "ele / ela faz"),
+            ("nos. hacemos", "nós fazemos"),
+            ("vos. hacéis", "vocês fazem"),
             ("ellos hacen", "eles fazem")
         ],
         "past": [
             ("yo hice", "eu fiz"),
             ("tú hiciste", "você fez"),
-            ("él / ella hizo", "ele / ela fez"),
-            ("nosotros hicimos", "nós fizemos"),
-            ("vosotros hicisteis", "vocês fizeram"),
+            ("él/ella hizo", "ele / ela fez"),
+            ("nos. hicimos", "nós fizemos"),
+            ("vos. hicisteis", "vocês fizeram"),
             ("ellos hicieron", "eles fizeram")
         ],
         "future": [
             ("yo haré", "eu farei"),
             ("tú harás", "você fará"),
-            ("él / ella hará", "ele / ela fará"),
-            ("nosotros haremos", "nós faremos"),
-            ("vosotros haréis", "vocês farão"),
+            ("él/ella hará", "ele / ela fará"),
+            ("nos. haremos", "nós faremos"),
+            ("vos. haréis", "vocês farão"),
             ("ellos harán", "eles farão")
         ],
         "examples": [
@@ -159,7 +155,6 @@ VERBS_DATA = {
             ("FUT",  "Mañana lo haré temprano.", "Amanhã farei cedo.")
         ]
     },
-    # 5. IR
     "ir": {
         "verb": "IR",
         "pt": "IR",
@@ -167,25 +162,25 @@ VERBS_DATA = {
         "present": [
             ("yo voy", "eu vou"),
             ("tú vas", "você vai"),
-            ("él / ella va", "ele / ela vai"),
-            ("nosotros vamos", "nós vamos"),
-            ("vosotros vais", "vocês vão [vós ides]"),
+            ("él/ella va", "ele / ela vai"),
+            ("nos. vamos", "nós vamos"),
+            ("vos. vais", "vocês vão [vós ides]"),
             ("ellos van", "eles vão")
         ],
         "past": [
             ("yo fui", "eu fui"),
             ("tú fuiste", "você foi"),
-            ("él / ella fue", "ele / ela foi"),
-            ("nosotros fuimos", "nós fomos"),
-            ("vosotros fuisteis", "vocês foram"),
+            ("él/ella fue", "ele / ela foi"),
+            ("nos. fuimos", "nós fomos"),
+            ("vos. fuisteis", "vocês foram"),
             ("ellos fueron", "eles foram")
         ],
         "future": [
             ("yo iré", "eu irei"),
             ("tú irás", "você irá"),
-            ("él / ella irá", "ele / ela irá"),
-            ("nosotros iremos", "nós iremos"),
-            ("vosotros iréis", "vocês irão"),
+            ("él/ella irá", "ele / ela irá"),
+            ("nos. iremos", "nós iremos"),
+            ("vos. iréis", "vocês irão"),
             ("ellos irán", "eles irão")
         ],
         "examples": [
@@ -194,7 +189,6 @@ VERBS_DATA = {
             ("FUT",  "El mes próximo iré a Madrid.", "No próximo mês irei a Madri.")
         ]
     },
-    # 6. PODER
     "poder": {
         "verb": "PODER",
         "pt": "PODER / CONSEGUIR",
@@ -202,25 +196,25 @@ VERBS_DATA = {
         "present": [
             ("yo puedo", "eu posso"),
             ("tú puedes", "você pode"),
-            ("él / ella puede", "ele / ela pode"),
-            ("nosotros podemos", "nós podemos"),
-            ("vosotros podéis", "vocês podem"),
+            ("él/ella puede", "ele / ela pode"),
+            ("nos. podemos", "nós podemos"),
+            ("vos. podéis", "vocês podem"),
             ("ellos pueden", "eles podem")
         ],
         "past": [
             ("yo pude", "eu pude"),
             ("tú pudiste", "você pôde"),
-            ("él / ella pudo", "ele / ela pôde"),
-            ("nosotros pudimos", "nós pudemos"),
-            ("vosotros pudisteis", "vocês puderam"),
+            ("él/ella pudo", "ele / ela pôde"),
+            ("nos. pudimos", "nós pudemos"),
+            ("vos. pudisteis", "vocês puderam"),
             ("ellos pudieron", "eles puderam")
         ],
         "future": [
             ("yo podré", "eu poderei"),
             ("tú podrás", "você poderá"),
-            ("él / ella podrá", "ele / ela poderá"),
-            ("nosotros podremos", "nós poderemos"),
-            ("vosotros podréis", "vocês poderão"),
+            ("él/ella podrá", "ele / ela poderá"),
+            ("nos. podremos", "nós poderemos"),
+            ("vos. podréis", "vocês poderão"),
             ("ellos podrán", "eles poderão")
         ],
         "examples": [
@@ -229,7 +223,6 @@ VERBS_DATA = {
             ("FUT",  "Pronto podré viajar.", "Em breve poderei viajar.")
         ]
     },
-    # 7. DECIR
     "decir": {
         "verb": "DECIR",
         "pt": "DIZER",
@@ -237,25 +230,25 @@ VERBS_DATA = {
         "present": [
             ("yo digo", "eu digo"),
             ("tú dices", "você diz"),
-            ("él / ella dice", "ele / ela diz"),
-            ("nosotros decimos", "nós dizemos"),
-            ("vosotros decís", "vocês dizem"),
+            ("él/ella dice", "ele / ela diz"),
+            ("nos. decimos", "nós dizemos"),
+            ("vos. decís", "vocês dizem"),
             ("ellos dicen", "eles dizem")
         ],
         "past": [
             ("yo dije", "eu disse"),
             ("tú dijiste", "você disse"),
-            ("él / ella dijo", "ele / ela disse"),
-            ("nosotros dijimos", "nós dissemos"),
-            ("vosotros dijisteis", "vocês disseram"),
+            ("él/ella dijo", "ele / ela disse"),
+            ("nos. dijimos", "nós dissemos"),
+            ("vos. dijisteis", "vocês disseram"),
             ("ellos dijeron", "eles disseram")
         ],
         "future": [
             ("yo diré", "eu direi"),
             ("tú dirás", "você dirá"),
-            ("él / ella dirá", "ele / ela dirá"),
-            ("nosotros diremos", "nós diremos"),
-            ("vosotros diréis", "vocês dirão"),
+            ("él/ella dirá", "ele / ela dirá"),
+            ("nos. diremos", "nós diremos"),
+            ("vos. diréis", "vocês dirão"),
             ("ellos dirán", "eles dirão")
         ],
         "examples": [
@@ -264,33 +257,32 @@ VERBS_DATA = {
             ("FUT",  "Mañana te diré la respuesta.", "Amanhã te direi a resposta.")
         ]
     },
-    # 8. SABER
     "saber": {
         "verb": "SABER",
         "pt": "SABER",
-        "icon": "brain",
+        "icon": "gear",
         "present": [
             ("yo sé", "eu sei"),
             ("tú sabes", "você sabe"),
-            ("él / ella sabe", "ele / ela sabe"),
-            ("nosotros sabemos", "nós sabemos"),
-            ("vosotros sabéis", "vocês sabem"),
+            ("él/ella sabe", "ele / ela sabe"),
+            ("nos. sabemos", "nós sabemos"),
+            ("vos. sabéis", "vocês sabem"),
             ("ellos saben", "eles sabem")
         ],
         "past": [
             ("yo supe", "eu soube"),
             ("tú supiste", "você soube"),
-            ("él / ella supo", "ele / ela soube"),
-            ("nosotros supimos", "nós soubemos"),
-            ("vosotros supisteis", "vocês souberam"),
+            ("él/ella supo", "ele / ela soube"),
+            ("nos. supimos", "nós soubemos"),
+            ("vos. supisteis", "vocês souberam"),
             ("ellos supieron", "eles souberam")
         ],
         "future": [
             ("yo sabré", "eu saberei"),
             ("tú sabrás", "você saberá"),
-            ("él / ella sabrá", "ele / ela saberá"),
-            ("nosotros sabremos", "nós saberemos"),
-            ("vosotros sabréis", "vocês saberão"),
+            ("él/ella sabrá", "ele / ela sabrá"),
+            ("nos. sabremos", "nós saberemos"),
+            ("vos. sabréis", "vocês saberão"),
             ("ellos sabrán", "eles saberão")
         ],
         "examples": [
@@ -299,7 +291,6 @@ VERBS_DATA = {
             ("FUT",  "Muy pronto lo sabremos.", "Muito em breve saberemos.")
         ]
     },
-    # 9. QUERER
     "querer": {
         "verb": "QUERER",
         "pt": "QUERER / AMAR",
@@ -307,69 +298,67 @@ VERBS_DATA = {
         "present": [
             ("yo quiero", "eu quero"),
             ("tú quieres", "você quer"),
-            ("él / ella quiere", "ele / ela quer"),
-            ("nosotros queremos", "nós queremos"),
-            ("vosotros queréis", "vocês querem"),
+            ("él/ella quiere", "ele / ela quer"),
+            ("nos. queremos", "nós queremos"),
+            ("vos. queréis", "vocês querem"),
             ("ellos quieren", "eles querem")
         ],
         "past": [
             ("yo quise", "eu quis"),
             ("tú quisiste", "você quis"),
-            ("él / ella quiso", "ele / ela quis"),
-            ("nosotros quisimos", "nós quisemos"),
-            ("vosotros quisisteis", "vocês quiseram"),
+            ("él/ella quiso", "ele / ela quis"),
+            ("nos. quisimos", "nós quisemos"),
+            ("vos. quisisteis", "vocês quiseram"),
             ("ellos quisieron", "eles quiseram")
         ],
         "future": [
             ("yo querré", "eu quererei"),
             ("tú querrás", "você quererá"),
-            ("él / ella querrá", "ele / ela quererá"),
-            ("nosotros querremos", "nós quereremos"),
-            ("vosotros querréis", "vocês quererão"),
+            ("él/ella querrá", "ele / ela quererá"),
+            ("nos. querremos", "nós quereremos"),
+            ("vos. querréis", "vocês quererão"),
             ("ellos querrán", "eles quererão")
         ],
         "examples": [
             ("PRES", "Quiero aprender español.", "Quero aprender espanhol."),
-            ("PAS",  "Quise llamarte pero no pude.", "Quis te ligar mas não pude."),
+            ("PAS",  "Quise llamarte ayer.", "Quis te ligar ontem."),
             ("FUT",  "Siempre te querré.", "Sempre te amarei/quererei.")
         ]
     },
-    # 10. DAR
     "dar": {
         "verb": "DAR",
         "pt": "DAR",
-        "icon": "gift",
+        "icon": "star",
         "present": [
             ("yo doy", "eu dou"),
             ("tú das", "você dá"),
-            ("él / ella da", "ele / ela dá"),
-            ("nosotros damos", "nós damos"),
-            ("vosotros dais", "vocês dão [vós dais]"),
+            ("él/ella da", "ele / ela dá"),
+            ("nos. damos", "nós damos"),
+            ("vos. dais", "vocês dão [vós dais]"),
             ("ellos dan", "eles dão")
         ],
         "past": [
             ("yo di", "eu dei"),
             ("tú diste", "você deu"),
-            ("él / ella dio", "ele / ela deu"),
-            ("nosotros dimos", "nós demos"),
-            ("vosotros disteis", "vocês deram"),
+            ("él/ella dio", "ele / ela deu"),
+            ("nos. dimos", "nós demos"),
+            ("vos. disteis", "vocês deram"),
             ("ellos dieron", "eles deram")
         ],
         "future": [
             ("yo daré", "eu darei"),
             ("tú darás", "você dará"),
-            ("él / ella dará", "ele / ela dará"),
-            ("nosotros daremos", "nós daremos"),
-            ("vosotros daréis", "vocês darão"),
+            ("él/ella dará", "ele / ela dará"),
+            ("nos. daremos", "nós daremos"),
+            ("vos. daréis", "vocês darão"),
             ("ellos darán", "eles darão")
         ],
         "examples": [
-            ("PRES", "Te doy las gracias por todo.", "Te dou os agradecimentos por tudo."),
+            ("PRES", "Te doy las gracias.", "Te dou os agradecimentos."),
             ("PAS",  "Le di el regalo a mamá.", "Dei o presente para a mãe."),
             ("FUT",  "Te daré noticias mañana.", "Te darei notícias amanhã.")
         ]
     },
-    # 11. VER
     "ver": {
         "verb": "VER",
         "pt": "VER",
@@ -377,34 +366,33 @@ VERBS_DATA = {
         "present": [
             ("yo veo", "eu vejo"),
             ("tú ves", "você vê"),
-            ("él / ella ve", "ele / ela vê"),
-            ("nosotros vemos", "nós vemos"),
-            ("vosotros veis", "vocês veem [vós vedes]"),
+            ("él/ella ve", "ele / ela vê"),
+            ("nos. vemos", "nós vemos"),
+            ("vos. veis", "vocês veem [vós vedes]"),
             ("ellos ven", "eles veem")
         ],
         "past": [
             ("yo vi", "eu vi"),
             ("tú viste", "você viu"),
-            ("él / ella vio", "ele / ela viu"),
-            ("nosotros vimos", "nós vimos"),
-            ("vosotros visteis", "vocês viram"),
+            ("él/ella vio", "ele / ela viu"),
+            ("nos. vimos", "nós vimos"),
+            ("vos. visteis", "vocês viram"),
             ("ellos vieron", "eles viram")
         ],
         "future": [
             ("yo veré", "eu verei"),
             ("tú verás", "você verá"),
-            ("él / ella verá", "ele / ela verá"),
-            ("nosotros veremos", "nós veremos"),
-            ("vosotros veréis", "vocês verão"),
+            ("él/ella verá", "ele / ela verá"),
+            ("nos. veremos", "nós veremos"),
+            ("vos. veréis", "vocês verão"),
             ("ellos verán", "eles verão")
         ],
         "examples": [
             ("PRES", "No veo nada aquí.", "Não vejo nada aqui."),
             ("PAS",  "Ayer vi una película genial.", "Ontem vi um filme genial."),
-            ("FUT",  "Nos veremos la próxima semana.", "Nos veremos na próxima semana.")
+            ("FUT",  "Nos veremos pronto.", "Nos veremos em breve.")
         ]
     },
-    # 12. PONER
     "poner": {
         "verb": "PONER",
         "pt": "PÔR / COLOCAR",
@@ -412,25 +400,25 @@ VERBS_DATA = {
         "present": [
             ("yo pongo", "eu ponho / coloco"),
             ("tú pones", "você põe"),
-            ("él / ella pone", "ele / ela põe"),
-            ("nosotros ponemos", "nós pomos"),
-            ("vosotros ponéis", "vocês põem"),
+            ("él/ella pone", "ele / ela põe"),
+            ("nos. ponemos", "nós pomos"),
+            ("vos. ponéis", "vocês põem"),
             ("ellos ponen", "eles põem")
         ],
         "past": [
             ("yo puse", "eu pus"),
             ("tú pusiste", "você pôs"),
-            ("él / ella puso", "ele / ela pôs"),
-            ("nosotros pusimos", "nós pusemos"),
-            ("vosotros pusisteis", "vocês puseram"),
+            ("él/ella puso", "ele / ela pôs"),
+            ("nos. pusimos", "nós pusemos"),
+            ("vos. pusisteis", "vocês puseram"),
             ("ellos pusieron", "eles puseram")
         ],
         "future": [
             ("yo pondré", "eu porei"),
             ("tú pondrás", "você porá"),
-            ("él / ella pondrá", "ele / ela porá"),
-            ("nosotros pondremos", "nós poremos"),
-            ("vosotros pondréis", "vocês porão"),
+            ("él/ella pondrá", "ele / ela porá"),
+            ("nos. pondremos", "nós poremos"),
+            ("vos. pondréis", "vocês porão"),
             ("ellos pondrán", "eles porão")
         ],
         "examples": [
@@ -439,7 +427,6 @@ VERBS_DATA = {
             ("FUT",  "Pondré más atención luego.", "Porei mais atenção depois.")
         ]
     },
-    # 13. LLEGAR
     "llegar": {
         "verb": "LLEGAR",
         "pt": "CHEGAR",
@@ -447,25 +434,25 @@ VERBS_DATA = {
         "present": [
             ("yo llego", "eu chego"),
             ("tú llegas", "você chega"),
-            ("él / ella llega", "ele / ela chega"),
-            ("nosotros llegamos", "nós chegamos"),
-            ("vosotros llegáis", "vocês chegam"),
+            ("él/ella llega", "ele / ela chega"),
+            ("nos. llegamos", "nós chegamos"),
+            ("vos. llegáis", "vocês chegam"),
             ("ellos llegan", "eles chegam")
         ],
         "past": [
             ("yo llegué", "eu cheguei"),
             ("tú llegaste", "você chegou"),
-            ("él / ella llegó", "ele / ela chegou"),
-            ("nosotros llegamos", "nós chegamos"),
-            ("vosotros llegasteis", "vocês chegaram"),
+            ("él/ella llegó", "ele / ela chegou"),
+            ("nos. llegamos", "nós chegamos"),
+            ("vos. llegasteis", "vocês chegaram"),
             ("ellos llegaron", "eles chegaram")
         ],
         "future": [
             ("yo llegaré", "eu chegarei"),
             ("tú llegarás", "você chegará"),
-            ("él / ella llegará", "ele / ela chegará"),
-            ("nosotros llegaremos", "nós chegaremos"),
-            ("vosotros llegaréis", "vocês chegarão"),
+            ("él/ella llegará", "ele / ela chegará"),
+            ("nos. llegaremos", "nós chegaremos"),
+            ("vos. llegaréis", "vocês chegarão"),
             ("ellos llegarán", "eles chegarão")
         ],
         "examples": [
@@ -474,7 +461,6 @@ VERBS_DATA = {
             ("FUT",  "Llegaré a tiempo mañana.", "Chegarei a tempo amanhã.")
         ]
     },
-    # 14. PASAR
     "pasar": {
         "verb": "PASAR",
         "pt": "PASSAR / ACONTECER",
@@ -482,25 +468,25 @@ VERBS_DATA = {
         "present": [
             ("yo paso", "eu passo"),
             ("tú pasas", "você passa"),
-            ("él / ella pasa", "ele / ela passa"),
-            ("nosotros pasamos", "nós passamos"),
-            ("vosotros pasáis", "vocês passam"),
+            ("él/ella pasa", "ele / ela passa"),
+            ("nos. pasamos", "nós passamos"),
+            ("vos. pasáis", "vocês passam"),
             ("ellos pasan", "eles passam")
         ],
         "past": [
             ("yo pasé", "eu passei"),
             ("tú pasaste", "você passou"),
-            ("él / ella pasó", "ele / ela passou"),
-            ("nosotros pasamos", "nós passamos"),
-            ("vosotros pasasteis", "vocês passaram"),
+            ("él/ella pasó", "ele / ela passou"),
+            ("nos. pasamos", "nós passamos"),
+            ("vos. pasasteis", "vocês passaram"),
             ("ellos pasaron", "eles passaram")
         ],
         "future": [
             ("yo pasaré", "eu passarei"),
             ("tú pasarás", "você passará"),
-            ("él / ella pasará", "ele / ela passará"),
-            ("nosotros pasaremos", "nós passaremos"),
-            ("vosotros pasaréis", "vocês passarão"),
+            ("él/ella pasará", "ele / ela pasará"),
+            ("nos. pasaremos", "nós passaremos"),
+            ("vos. pasaréis", "vocês passarão"),
             ("ellos pasarán", "eles passarão")
         ],
         "examples": [
@@ -509,33 +495,32 @@ VERBS_DATA = {
             ("FUT",  "El tiempo pasará rápido.", "O tempo passará rápido.")
         ]
     },
-    # 15. HABER
     "haber": {
         "verb": "HABER",
-        "pt": "HAVER / TER (AUXILIAR)",
+        "pt": "HAVER / TER",
         "icon": "star",
         "present": [
             ("yo he", "eu hei / tenho"),
             ("tú has", "você há / tem"),
-            ("él / ella ha / hay", "ele há / há (existe)"),
-            ("nosotros hemos", "nós havemos / temos"),
-            ("vosotros habéis", "vocês haveis"),
+            ("él/ella ha / hay", "ele há / há (existe)"),
+            ("nos. hemos", "nós havemos / temos"),
+            ("vos. habéis", "vocês haveis"),
             ("ellos han", "eles hão / têm")
         ],
         "past": [
             ("yo hube", "eu houve"),
             ("tú hubiste", "você houveste"),
-            ("él / ella hubo", "houve (aconteceu)"),
-            ("nosotros hubimos", "nós houvemos"),
-            ("vosotros hubisteis", "vocês houvestes"),
+            ("él/ella hubo", "houve (aconteceu)"),
+            ("nos. hubimos", "nós houvemos"),
+            ("vos. hubisteis", "vocês houvestes"),
             ("ellos hubieron", "eles houveram")
         ],
         "future": [
             ("yo habré", "eu haverei"),
             ("tú habrás", "você haverá"),
-            ("él / ella habrá", "haverá (existirá)"),
-            ("nosotros habremos", "nós haveremos"),
-            ("vosotros habréis", "vocês havereis"),
+            ("él/ella habrá", "haverá (existirá)"),
+            ("nos. habremos", "nós haveremos"),
+            ("vos. habréis", "vocês havereis"),
             ("ellos habrán", "eles haverão")
         ],
         "examples": [
@@ -544,7 +529,6 @@ VERBS_DATA = {
             ("FUT",  "Mañana habrá buenas noticias.", "Amanhã haverá boas notícias.")
         ]
     },
-    # MODELO REGULAR 1 (-AR): HABLAR
     "hablar": {
         "verb": "HABLAR",
         "pt": "FALAR",
@@ -552,25 +536,25 @@ VERBS_DATA = {
         "present": [
             ("yo hablo", "eu falo"),
             ("tú hablas", "você fala"),
-            ("él / ella habla", "ele / ela fala"),
-            ("nosotros hablamos", "nós falamos"),
-            ("vosotros habláis", "vocês falam [vós]"),
+            ("él/ella habla", "ele / ela fala"),
+            ("nos. hablamos", "nós falamos"),
+            ("vos. habláis", "vocês falam [vós]"),
             ("ellos hablan", "eles falam")
         ],
         "past": [
             ("yo hablé", "eu falei"),
             ("tú hablaste", "você falou"),
-            ("él / ella habló", "ele / ela falou"),
-            ("nosotros hablamos", "nós falamos"),
-            ("vosotros hablasteis", "vocês falaram [vós]"),
+            ("él/ella habló", "ele / ela falou"),
+            ("nos. hablamos", "nós falamos"),
+            ("vos. hablasteis", "vocês falaram [vós]"),
             ("ellos hablaron", "eles falaram")
         ],
         "future": [
             ("yo hablaré", "eu falarei"),
             ("tú hablarás", "você falará"),
-            ("él / ella hablará", "ele / ela falará"),
-            ("nosotros hablaremos", "nós falaremos"),
-            ("vosotros hablaréis", "vocês falarão [vós]"),
+            ("él/ella hablará", "ele / ela falará"),
+            ("nos. hablaremos", "nós falaremos"),
+            ("vos. hablaréis", "vocês falarão [vós]"),
             ("ellos hablarán", "eles falarão")
         ],
         "examples": [
@@ -579,7 +563,6 @@ VERBS_DATA = {
             ("FUT",  "Mañana hablaré con el jefe.", "Amanhã falarei com o chefe.")
         ]
     },
-    # MODELO REGULAR 2 (-ER): COMER
     "comer": {
         "verb": "COMER",
         "pt": "COMER",
@@ -587,25 +570,25 @@ VERBS_DATA = {
         "present": [
             ("yo como", "eu como"),
             ("tú comes", "você come"),
-            ("él / ella come", "ele / ela come"),
-            ("nosotros comemos", "nós comemos"),
-            ("vosotros coméis", "vocês comem [vós]"),
+            ("él/ella come", "ele / ela come"),
+            ("nos. comemos", "nós comemos"),
+            ("vos. coméis", "vocês comem [vós]"),
             ("ellos comen", "eles comem")
         ],
         "past": [
             ("yo comí", "eu comi"),
             ("tú comiste", "você comeu"),
-            ("él / ella comió", "ele / ela comeu"),
-            ("nosotros comimos", "nós comemos"),
-            ("vosotros comisteis", "vocês comeram [vós]"),
+            ("él/ella comió", "ele / ela comeu"),
+            ("nos. comimos", "nós comemos"),
+            ("vos. comisteis", "vocês comeram [vós]"),
             ("ellos comieron", "eles comeram")
         ],
         "future": [
             ("yo comeré", "eu comerei"),
             ("tú comerás", "você comerá"),
-            ("él / ella comerá", "ele / ela comerá"),
-            ("nosotros comeremos", "nós comeremos"),
-            ("vosotros comeréis", "vocês comerão [vós]"),
+            ("él/ella comerá", "ele / ela comerá"),
+            ("nos. comeremos", "nós comeremos"),
+            ("vos. comeréis", "vocês comerão [vós]"),
             ("ellos comerán", "eles comerão")
         ],
         "examples": [
@@ -614,7 +597,6 @@ VERBS_DATA = {
             ("FUT",  "Mañana comeremos juntos.", "Amanhã comeremos juntos.")
         ]
     },
-    # MODELO REGULAR 3 (-IR): VIVIR
     "vivir": {
         "verb": "VIVIR",
         "pt": "VIVER / MORAR",
@@ -622,25 +604,25 @@ VERBS_DATA = {
         "present": [
             ("yo vivo", "eu moro"),
             ("tú vives", "você mora"),
-            ("él / ella vive", "ele / ela mora"),
-            ("nosotros vivimos", "nós moramos"),
-            ("vosotros vivís", "vocês moram [vós]"),
+            ("él/ella vive", "ele / ela mora"),
+            ("nos. vivimos", "nós moramos"),
+            ("vos. vivís", "vocês moram [vós]"),
             ("ellos viven", "eles moram")
         ],
         "past": [
             ("yo viví", "eu morei"),
             ("tú viviste", "você morou"),
-            ("él / ella vivió", "ele / ela morou"),
-            ("nosotros vivimos", "nós moramos"),
-            ("vosotros vivisteis", "vocês moraram [vós]"),
+            ("él/ella vivió", "ele / ela morou"),
+            ("nos. vivimos", "nós moramos"),
+            ("vos. vivisteis", "vocês moraram [vós]"),
             ("ellos vivieron", "eles moraram")
         ],
         "future": [
             ("yo viviré", "eu morarei"),
             ("tú vivirás", "você morará"),
-            ("él / ella vivirá", "ele / ela morará"),
-            ("nosotros viviremos", "nós moraremos"),
-            ("vosotros viviréis", "vocês morarão [vós]"),
+            ("él/ella vivirá", "ele / ela morará"),
+            ("nos. viviremos", "nós moraremos"),
+            ("vos. viviréis", "vocês morarão [vós]"),
             ("ellos vivirán", "eles morarão")
         ],
         "examples": [
@@ -715,61 +697,75 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
 
     card_start_y = y
     
-    # Barra de Título Superior Integrada
-    draw.rectangle([(6, y), (WIDTH - 6, y + 54)], fill=(0, 0, 0))
-    draw.text((18, y + 27), data["verb"], fill=(255, 255, 255), anchor="lm", font=get_font(32, bold=True))
-    draw.text((WIDTH - 18, y + 27), f"({data['pt']})", fill=(255, 255, 255), anchor="rm", font=get_font(17, bold=True))
-    y += 58
+    # 1. Cabeçalho GIGANTE
+    draw.rectangle([(4, y), (WIDTH - 4, y + 68)], fill=(0, 0, 0))
+    draw.text((16, y + 34), data["verb"], fill=(255, 255, 255), anchor="lm", font=get_font(44, bold=True))
+    draw.text((WIDTH - 16, y + 34), f"({data['pt']})", fill=(255, 255, 255), anchor="rm", font=get_font(20, bold=True))
+    y += 72
 
-    # Subtítulo + Ícone
-    draw.rectangle([(6, y), (WIDTH - 6, y + 32)], fill=(240, 240, 240))
-    draw.text((18, y + 16), "6 PESSOAS : 3 TEMPOS", fill=(0, 0, 0), anchor="lm", font=get_font(12, bold=True))
-    draw_generic_icon(draw, data.get("icon", "check"), WIDTH - 52, y + 4)
-    y += 36
+    # 2. Barra de Ícone
+    draw.rectangle([(4, y), (WIDTH - 4, y + 28)], fill=(235, 235, 235))
+    draw.text((16, y + 14), "CONJUGAÇÃO COMPLETA", fill=(0, 0, 0), anchor="lm", font=get_font(13, bold=True))
+    draw_generic_icon(draw, data.get("icon", "check"), WIDTH - 48, y + 2)
+    y += 32
 
-    # Blocos de Conjugação
+    # 3. Blocos de Conjugação com FONTES GIGANTES (23pt BOLD / 18pt PT)
+    font_es = get_font(23, bold=True)
+    font_pt = get_font(18, bold=False)
+    
     def render_tense_block(cur_y: int, title_es: str, title_pt: str, conjugations: list) -> int:
-        draw.rectangle([(6, cur_y), (WIDTH - 6, cur_y + 24)], fill=(0, 0, 0))
-        draw.text((16, cur_y + 12), title_es, fill=(255, 255, 255), anchor="lm", font=get_font(13, bold=True))
-        draw.text((WIDTH - 16, cur_y + 12), f"[{title_pt}]", fill=(255, 255, 255), anchor="rm", font=get_font(12, bold=True))
-        cur_y += 26
+        draw.rectangle([(4, cur_y), (WIDTH - 4, cur_y + 30)], fill=(0, 0, 0))
+        draw.text((14, cur_y + 15), title_es, fill=(255, 255, 255), anchor="lm", font=get_font(16, bold=True))
+        draw.text((WIDTH - 14, cur_y + 15), f"[{title_pt}]", fill=(255, 255, 255), anchor="rm", font=get_font(14, bold=True))
+        cur_y += 33
 
         for idx, (es, pt) in enumerate(conjugations):
+            es_clean = es.replace("nosotros", "nos.").replace("vosotros", "vos.")
+            es_clean = es_clean.replace("él / ella", "él/ella")
+            
+            w_total = font_es.getlength(es_clean) + font_pt.getlength(f"= {pt}") + 30
+            f_es_cur = font_es if w_total <= WIDTH - 20 else get_font(20, bold=True)
+            f_pt_cur = font_pt if w_total <= WIDTH - 20 else get_font(16, bold=False)
+
+            row_h = 32
             if idx % 2 == 1:
-                draw.rectangle([(6, cur_y - 1), (WIDTH - 6, cur_y + 24)], fill=(240, 240, 240))
+                draw.rectangle([(4, cur_y - 1), (WIDTH - 4, cur_y + row_h - 2)], fill=(242, 242, 242))
             
-            draw.text((16, cur_y + 11), es, fill=(0, 0, 0), anchor="lm", font=get_font(16, bold=True))
-            draw.text((WIDTH - 16, cur_y + 11), f"-> {pt}", fill=(0, 0, 0), anchor="rm", font=get_font(14))
-            cur_y += 24
+            draw.text((14, cur_y + row_h // 2 - 1), es_clean, fill=(0, 0, 0), anchor="lm", font=f_es_cur)
+            draw.text((WIDTH - 14, cur_y + row_h // 2 - 1), f"= {pt}", fill=(0, 0, 0), anchor="rm", font=f_pt_cur)
+            cur_y += row_h
             
-        return cur_y + 4
+        return cur_y + 6
 
     y = render_tense_block(y, "1. PRESENTE", "Presente", data["present"])
-    y = render_tense_block(y, "2. PASSADO", "Pret. Indefinido", data["past"])
-    y = render_tense_block(y, "3. FUTURO", "Futuro Simples", data["future"])
+    y = render_tense_block(y, "2. PASSADO", "Pretérito", data["past"])
+    y = render_tense_block(y, "3. FUTURO", "Futuro", data["future"])
 
-    # Seção com 3 Frases de Demonstração
-    draw.rectangle([(6, y), (WIDTH - 6, y + 24)], fill=(0, 0, 0))
-    draw.text((16, y + 12), "FRASES DE DEMONSTRAÇÃO", fill=(255, 255, 255), anchor="lm", font=get_font(12, bold=True))
-    y += 26
+    # 4. Frases de Demonstração
+    draw.rectangle([(4, y), (WIDTH - 4, y + 28)], fill=(0, 0, 0))
+    draw.text((14, y + 14), "FRASES DE EXEMPLO", fill=(255, 255, 255), anchor="lm", font=get_font(14, bold=True))
+    y += 30
+
+    font_ex_es = get_font(16, bold=True)
+    font_ex_pt = get_font(15, bold=False)
 
     for idx, (tense, es_phrase, pt_phrase) in enumerate(data["examples"]):
         bg_col = (255, 255, 255) if idx % 2 == 0 else (244, 244, 244)
-        box_h = 44
-        draw.rectangle([(6, y), (WIDTH - 6, y + box_h)], fill=bg_col)
+        box_h = 54
+        draw.rectangle([(4, y), (WIDTH - 4, y + box_h)], fill=bg_col)
         
-        draw.rounded_rectangle([(14, y + 6), (56, y + 24)], radius=4, fill=(0, 0, 0))
-        draw.text((35, y + 15), tense, fill=(255, 255, 255), anchor="mm", font=get_font(10, bold=True))
+        draw.rounded_rectangle([(12, y + 8), (62, y + 28)], radius=4, fill=(0, 0, 0))
+        draw.text((37, y + 18), tense, fill=(255, 255, 255), anchor="mm", font=get_font(12, bold=True))
         
-        draw.text((64, y + 15), es_phrase, fill=(0, 0, 0), anchor="lm", font=get_font(13, bold=True))
-        draw.text((64, y + 33), f"-> {pt_phrase}", fill=(0, 0, 0), anchor="lm", font=get_font(12))
+        draw.text((70, y + 18), es_phrase, fill=(0, 0, 0), anchor="lm", font=font_ex_es)
+        draw.text((70, y + 39), f"= {pt_phrase}", fill=(0, 0, 0), anchor="lm", font=font_ex_pt)
         
         y += box_h
         if idx < len(data["examples"]) - 1:
-            draw.line([(14, y), (WIDTH - 14, y)], fill=(210, 210, 210), width=1)
+            draw.line([(12, y), (WIDTH - 12, y)], fill=(200, 200, 200), width=1)
 
     y += 4
-    draw.rectangle([(6, card_start_y), (WIDTH - 6, y)], outline=(0, 0, 0), width=3)
+    draw.rectangle([(4, card_start_y), (WIDTH - 4, y)], outline=(0, 0, 0), width=3)
     y += 10
 
     draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(0, 0, 0), anchor="mm", font=get_font(11))
@@ -781,7 +777,7 @@ def main():
     out_dir = Path(r"C:\Users\felip\Documents\git\phomemo-m02\tiras")
     out_dir.mkdir(parents=True, exist_ok=True)
     
-    print(f"Gerando catálogo de {len(VERBS_DATA)} verbos...")
+    print(f"Gerando catálogo com FONTES GIGANTES ({len(VERBS_DATA)} verbos)...")
     for key in VERBS_DATA:
         img = generate_verb_strip(key)
         path = out_dir / f"tira_{key}.png"
