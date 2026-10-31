@@ -29,3 +29,11 @@ ENV/
 .vscode/
 *.swp
 *.swo
+
+# Generated content and media assets
+tiras/
+*.png
+*.jpg
+*.jpeg
+*.webp
+
