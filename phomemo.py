@@ -86,7 +86,8 @@ class PhomemoM02:
         self.ser.flush()
         time.sleep(0.05)
 
-        # Transmissão contínua em blocos de 48 linhas para fluxo suave sem travadinhas
+        # Transmissão cadenciada com pacing equilibrado (0.15s por bloco de 48 linhas)
+        start_time = time.time()
         CHUNK_ROWS = 48
         for start_y in range(0, height, CHUNK_ROWS):
             block_height = min(CHUNK_ROWS, height - start_y)
@@ -110,8 +111,7 @@ class PhomemoM02:
 
             self.ser.write(block_data)
             self.ser.flush()
-            # Pausa ajustada para coincidir com a queima contínua do motor (sem parar)
-            time.sleep(0.08)
+            time.sleep(0.14)
 
         # Feed de avanço final
         feed_cmd = bytearray()
@@ -121,8 +121,14 @@ class PhomemoM02:
         self.ser.write(feed_cmd)
         self.ser.flush()
 
-        # Aguarda a finalização mecânica antes de desconectar
-        time.sleep(3.5)
+        # Tempo físico necessário para a cabeça térmica e o motor completarem a impressão
+        # Velocidade típica: ~12 a 15 mm/s. Altura em mm = height / 8.
+        height_mm = height / 8.0
+        estimated_print_time = (height_mm / 13.0) + 3.0
+        elapsed = time.time() - start_time
+        remaining_wait = max(4.0, estimated_print_time - elapsed)
+        
+        time.sleep(remaining_wait)
 
     def print_text(self, text: str, font_size: int = 22, title: Optional[str] = None):
         """Formata e imprime um texto com quebra automática de linha."""
