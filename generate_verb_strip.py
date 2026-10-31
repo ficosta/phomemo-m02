@@ -1,6 +1,6 @@
 """
 Gerador de Tiras de Estudo de Verbos em Espanhol para Phomemo M02
-Versão com FONTES GRANDES e alta legibilidade térmica.
+Versão COMPACTA: Fontes grandes com aproveitamento MÁXIMO do papel (sem sobras vazias).
 Largura: 384px (203 DPI)
 """
 
@@ -106,116 +106,111 @@ VERBS_DATA = {
     }
 }
 
-def draw_speech_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
-    # Balão 1
-    draw.rounded_rectangle([(x, y), (x + 60, y + 40)], radius=9, outline=(0, 0, 0), width=3, fill=(255, 255, 255))
-    draw.polygon([(x + 14, y + 38), (x + 20, y + 50), (x + 28, y + 38)], fill=(255, 255, 255), outline=(0, 0, 0))
-    draw.line([(x + 15, y + 38), (x + 27, y + 38)], fill=(255, 255, 255), width=3)
-    draw.line([(x + 12, y + 14), (x + 48, y + 14)], fill=(0, 0, 0), width=3)
-    draw.line([(x + 12, y + 24), (x + 38, y + 24)], fill=(0, 0, 0), width=3)
+def draw_mini_speech_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
+    # Ícone compacto integrado ao cabeçalho (36x24px)
+    draw.rounded_rectangle([(x, y), (x + 32, y + 20)], radius=5, outline=(0, 0, 0), width=2, fill=(255, 255, 255))
+    draw.polygon([(x + 6, y + 19), (x + 11, y + 26), (x + 16, y + 19)], fill=(255, 255, 255), outline=(0, 0, 0))
+    draw.line([(x + 7, y + 19), (x + 15, y + 19)], fill=(255, 255, 255), width=2)
+    draw.line([(x + 6, y + 7), (x + 26, y + 7)], fill=(0, 0, 0), width=2)
+    draw.line([(x + 6, y + 13), (x + 20, y + 13)], fill=(0, 0, 0), width=2)
 
-    # Balão 2
-    draw.rounded_rectangle([(x + 44, y + 15), (x + 95, y + 50)], radius=8, outline=(0, 0, 0), width=3, fill=(0, 0, 0))
-    draw.polygon([(x + 72, y + 49), (x + 80, y + 60), (x + 86, y + 49)], fill=(0, 0, 0))
-    draw.line([(x + 52, y + 26), (x + 86, y + 26)], fill=(255, 255, 255), width=3)
-    draw.line([(x + 52, y + 36), (x + 76, y + 36)], fill=(255, 255, 255), width=3)
+def draw_mini_food_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
+    cx, cy = x + 18, y + 12
+    draw.ellipse([(cx - 12, cy - 12), (cx + 12, cy + 12)], outline=(0, 0, 0), width=2)
+    # garfo
+    draw.line([(cx - 18, cy - 10), (cx - 18, cy + 10)], fill=(0, 0, 0), width=2)
+    # faca
+    draw.line([(cx + 18, cy - 10), (cx + 18, cy + 10)], fill=(0, 0, 0), width=2)
 
-def draw_food_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
-    cx, cy = x + 50, y + 32
-    draw.ellipse([(cx - 28, cy - 28), (cx + 28, cy + 28)], outline=(0, 0, 0), width=3)
-    draw.ellipse([(cx - 18, cy - 18), (cx + 18, cy + 18)], outline=(0, 0, 0), width=2)
-    
-    gx = cx - 42
-    draw.line([(gx, cy - 25), (gx, cy + 25)], fill=(0, 0, 0), width=3)
-    draw.line([(gx - 5, cy - 25), (gx + 5, cy - 25)], fill=(0, 0, 0), width=3)
-    draw.line([(gx - 5, cy - 25), (gx - 5, cy - 12)], fill=(0, 0, 0), width=2)
-    draw.line([(gx + 5, cy - 25), (gx + 5, cy - 12)], fill=(0, 0, 0), width=2)
-    
-    fx = cx + 42
-    draw.line([(fx, cy - 25), (fx, cy + 25)], fill=(0, 0, 0), width=3)
-    draw.arc([(fx - 5, cy - 28), (fx + 5, cy - 8)], start=270, end=90, fill=(0, 0, 0), width=3)
-
-def draw_house_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
-    cx, cy = x + 50, y + 32
-    draw.polygon([(cx, cy - 30), (cx - 36, cy - 2), (cx + 36, cy - 2)], fill=(0, 0, 0))
-    draw.rectangle([(cx - 26, cy - 2), (cx + 26, cy + 26)], outline=(0, 0, 0), width=3)
-    draw.rectangle([(cx - 9, cy + 5), (cx + 9, cy + 26)], fill=(0, 0, 0))
+def draw_mini_house_icon(draw: ImageDraw.ImageDraw, x: int, y: int):
+    cx, cy = x + 18, y + 12
+    draw.polygon([(cx, cy - 12), (cx - 16, cy), (cx + 16, cy)], fill=(0, 0, 0))
+    draw.rectangle([(cx - 12, cy), (cx + 12, cy + 12)], outline=(0, 0, 0), width=2)
+    draw.rectangle([(cx - 4, cy + 4), (cx + 4, cy + 12)], fill=(0, 0, 0))
 
 def generate_verb_strip(verb_key: str) -> Image.Image:
     data = VERBS_DATA[verb_key]
-    height = 1140
-    img = Image.new('RGB', (WIDTH, height), color=(255, 255, 255))
+    
+    # Criamos um canvas temporário alto e cortamos dinamicamente no final
+    canvas_h = 1300
+    img = Image.new('RGB', (WIDTH, canvas_h), color=(255, 255, 255))
     draw = ImageDraw.Draw(img)
 
-    # 1. Linha de corte superior
-    draw.text((WIDTH // 2, 12), "- - - - - - - - - - - - - - - - - - - - -", fill=(120, 120, 120), anchor="mm", font=get_font(13))
+    y = 6
 
-    # 2. Borda externa do cartão
-    draw.rounded_rectangle([(6, 26), (WIDTH - 6, height - 26)], radius=14, outline=(0, 0, 0), width=3)
+    # 1. Linha de corte inicial compacta
+    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(140, 140, 140), anchor="mm", font=get_font(11))
+    y += 12
 
-    # 3. Cabeçalho
-    draw.rectangle([(6, 26), (WIDTH - 6, 64)], fill=(0, 0, 0))
-    draw.text((WIDTH // 2, 45), "ESPAÑOL : VERBOS", fill=(255, 255, 255), anchor="mm", font=get_font(16, bold=True))
-
-    # 4. Verbo principal BEM GRANDE
-    draw.text((WIDTH // 2, 106), data["verb"], fill=(0, 0, 0), anchor="mm", font=get_font(38, bold=True))
+    # Início da moldura principal
+    card_start_y = y
     
-    # Tag de tradução PT-BR
-    trans_text = f"=  {data['pt']}  ="
-    draw.rounded_rectangle([(WIDTH // 2 - 85, 138), (WIDTH // 2 + 85, 170)], radius=7, outline=(0, 0, 0), width=2, fill=(240, 240, 240))
-    draw.text((WIDTH // 2, 154), trans_text, fill=(0, 0, 0), anchor="mm", font=get_font(17, bold=True))
+    # 2. Barra de Título Superior Integrada (Economiza muito espaço vertical!)
+    draw.rectangle([(6, y), (WIDTH - 6, y + 54)], fill=(0, 0, 0))
+    
+    # Verbo em Espanhol (32pt Bold branco)
+    draw.text((18, y + 27), data["verb"], fill=(255, 255, 255), anchor="lm", font=get_font(32, bold=True))
+    
+    # Tradução PT (17pt Bold branco)
+    draw.text((WIDTH - 18, y + 27), f"({data['pt']})", fill=(230, 230, 230), anchor="rm", font=get_font(17, bold=True))
+    y += 58
 
-    # 5. Ilustração
-    icon_box_y = 182
-    draw.rounded_rectangle([(16, icon_box_y), (WIDTH - 16, icon_box_y + 78)], radius=10, outline=(160, 160, 160), width=1, fill=(252, 252, 252))
+    # 3. Faixa de Ícone e Tag compacta
+    draw.rectangle([(6, y), (WIDTH - 6, y + 32)], fill=(245, 245, 245))
+    draw.text((20, y + 16), "GUIA PRÁTICO DE CONJUGAÇÃO", fill=(80, 80, 80), anchor="lm", font=get_font(11, bold=True))
+    
+    # Desenha o ícone compacto alinhado à direita
     if data["icon"] == "speech":
-        draw_speech_icon(draw, WIDTH // 2 - 50, icon_box_y + 8)
+        draw_mini_speech_icon(draw, WIDTH - 52, y + 4)
     elif data["icon"] == "food":
-        draw_food_icon(draw, WIDTH // 2 - 50, icon_box_y + 8)
+        draw_mini_food_icon(draw, WIDTH - 52, y + 4)
     elif data["icon"] == "house":
-        draw_house_icon(draw, WIDTH // 2 - 50, icon_box_y + 8)
+        draw_mini_house_icon(draw, WIDTH - 52, y + 4)
+    y += 36
 
-    # 6. Blocos de Conjugação com FONTES MAIORES
-    def render_tense_block(start_y: int, title_es: str, title_pt: str, conjugations: list) -> int:
-        # Header da seção
-        draw.rounded_rectangle([(16, start_y), (WIDTH - 16, start_y + 32)], radius=6, fill=(0, 0, 0))
-        draw.text((26, start_y + 16), title_es, fill=(255, 255, 255), anchor="lm", font=get_font(15, bold=True))
-        draw.text((WIDTH - 26, start_y + 16), f"[{title_pt}]", fill=(220, 220, 220), anchor="rm", font=get_font(14))
-        
-        cur_y = start_y + 40
+    # 4. Blocos de Conjugação (Fontes grandes: 17pt espanhol / 15pt português, sem espaços vazios)
+    def render_tense_block(cur_y: int, title_es: str, title_pt: str, conjugations: list) -> int:
+        # Header compacto do tempo verbal
+        draw.rectangle([(6, cur_y), (WIDTH - 6, cur_y + 24)], fill=(40, 40, 40))
+        draw.text((16, cur_y + 12), title_es, fill=(255, 255, 255), anchor="lm", font=get_font(13, bold=True))
+        draw.text((WIDTH - 16, cur_y + 12), f"[{title_pt}]", fill=(210, 210, 210), anchor="rm", font=get_font(12))
+        cur_y += 26
+
         for idx, (es, pt) in enumerate(conjugations):
             if idx % 2 == 1:
-                draw.rectangle([(16, cur_y - 2), (WIDTH - 16, cur_y + 27)], fill=(244, 244, 244))
+                draw.rectangle([(6, cur_y - 1), (WIDTH - 6, cur_y + 24)], fill=(244, 244, 244))
             
-            # Espanhol (tamanho 17pt bold)
-            draw.text((24, cur_y + 12), es, fill=(0, 0, 0), anchor="lm", font=get_font(17, bold=True))
-            # Português (tamanho 15pt regular)
-            draw.text((WIDTH - 24, cur_y + 12), f"-> {pt}", fill=(60, 60, 60), anchor="rm", font=get_font(15))
-            cur_y += 30
-        return cur_y + 10
+            # Espanhol: 17pt Bold
+            draw.text((16, cur_y + 11), es, fill=(0, 0, 0), anchor="lm", font=get_font(17, bold=True))
+            # Português: 15pt Regular
+            draw.text((WIDTH - 16, cur_y + 11), f"-> {pt}", fill=(60, 60, 60), anchor="rm", font=get_font(15))
+            cur_y += 25
+            
+        return cur_y + 4
 
     # Presente
-    y_next = render_tense_block(274, "1. PRESENTE", "Presente", data["present"])
+    y = render_tense_block(y, "PRESENTE", "Presente", data["present"])
     # Passado
-    y_next = render_tense_block(y_next, "2. PASSADO", "Pret. Indefinido", data["past"])
+    y = render_tense_block(y, "PASSADO", "Pret. Indefinido", data["past"])
     # Futuro
-    y_next = render_tense_block(y_next, "3. FUTURO", "Futuro Simples", data["future"])
+    y = render_tense_block(y, "FUTURO", "Futuro Simples", data["future"])
 
-    # 7. Frase de Exemplo no cotidiano
-    draw.line([(20, y_next), (WIDTH - 20, y_next)], fill=(180, 180, 180), width=1)
-    y_next += 8
-    draw.text((WIDTH // 2, y_next + 10), "EXEMPLO PRÁTICO", fill=(0, 0, 0), anchor="mm", font=get_font(14, bold=True))
-    y_next += 26
-    
-    # Caixa do exemplo ampliada
-    draw.rounded_rectangle([(16, y_next), (WIDTH - 16, y_next + 68)], radius=8, outline=(0, 0, 0), width=2, fill=(248, 248, 248))
-    draw.text((24, y_next + 19), f"[ES]  {data['example_es']}", fill=(0, 0, 0), font=get_font(15, bold=True))
-    draw.text((24, y_next + 44), f"[PT]  {data['example_pt']}", fill=(70, 70, 70), font=get_font(14))
+    # 5. Frase de Exemplo no cotidiano (Compacta e direta)
+    draw.rectangle([(6, y), (WIDTH - 6, y + 48)], fill=(245, 245, 245), outline=(0, 0, 0), width=1)
+    draw.text((16, y + 14), f"[ES]  {data['example_es']}", fill=(0, 0, 0), anchor="lm", font=get_font(14, bold=True))
+    draw.text((16, y + 34), f"[PT]  {data['example_pt']}", fill=(70, 70, 70), anchor="lm", font=get_font(13))
+    y += 52
 
-    # 8. Linha de corte inferior
-    draw.text((WIDTH // 2, height - 12), "- - - - - - - - - - - - - - - - - - - - -", fill=(120, 120, 120), anchor="mm", font=get_font(13))
+    # Moldura externa em volta do cartão inteiro
+    draw.rectangle([(6, card_start_y), (WIDTH - 6, y)], outline=(0, 0, 0), width=3)
+    y += 10
 
-    return img
+    # 6. Linha de corte final imediata (sem sobras vazias!)
+    draw.text((WIDTH // 2, y), "- - - - - - - - - - - - - - - - - - - - - - - -", fill=(140, 140, 140), anchor="mm", font=get_font(11))
+    y += 10
+
+    # Recorta exatamente na altura real utilizada
+    return img.crop((0, 0, WIDTH, y))
 
 def main():
     out_dir = Path(r"C:\Users\felip\Documents\git\phomemo-m02\tiras")
@@ -225,7 +220,7 @@ def main():
         img = generate_verb_strip(key)
         path = out_dir / f"tira_{key}.png"
         img.save(path)
-        print(f"Gerada: {path}")
+        print(f"Gerada ({img.width}x{img.height}px): {path}")
 
 if __name__ == "__main__":
     main()
