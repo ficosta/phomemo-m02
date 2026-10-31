@@ -86,8 +86,8 @@ class PhomemoM02:
         self.ser.flush()
         time.sleep(0.05)
 
-        # Transmissão em blocos de 32 linhas para respeitar o buffer de memória da M02
-        CHUNK_ROWS = 32
+        # Transmissão contínua em blocos de 48 linhas para fluxo suave sem travadinhas
+        CHUNK_ROWS = 48
         for start_y in range(0, height, CHUNK_ROWS):
             block_height = min(CHUNK_ROWS, height - start_y)
             block_data = bytearray()
@@ -110,8 +110,8 @@ class PhomemoM02:
 
             self.ser.write(block_data)
             self.ser.flush()
-            # Pausa para o cabeçote térmico processar as 32 linhas sem estourar o buffer
-            time.sleep(0.22)
+            # Pausa ajustada para coincidir com a queima contínua do motor (sem parar)
+            time.sleep(0.08)
 
         # Feed de avanço final
         feed_cmd = bytearray()

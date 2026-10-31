@@ -703,13 +703,13 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
     draw.text((WIDTH - 16, y + 34), f"({data['pt']})", fill=(255, 255, 255), anchor="rm", font=get_font(20, bold=True))
     y += 72
 
-    # 2. Barra de Ícone
-    draw.rectangle([(4, y), (WIDTH - 4, y + 28)], fill=(235, 235, 235))
+    # 2. Barra de Ícone limpa (Fundo branco com linha fina)
+    draw.rectangle([(4, y), (WIDTH - 4, y + 28)], outline=(0, 0, 0), width=1, fill=(255, 255, 255))
     draw.text((16, y + 14), "CONJUGAÇÃO COMPLETA", fill=(0, 0, 0), anchor="lm", font=get_font(13, bold=True))
     draw_generic_icon(draw, data.get("icon", "check"), WIDTH - 48, y + 2)
     y += 32
 
-    # 3. Blocos de Conjugação com FONTES GIGANTES (23pt BOLD / 18pt PT)
+    # 3. Blocos de Conjugação (Zero cinza, linhas divisórias finas de 1px)
     font_es = get_font(23, bold=True)
     font_pt = get_font(18, bold=False)
     
@@ -728,12 +728,13 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
             f_pt_cur = font_pt if w_total <= WIDTH - 20 else get_font(16, bold=False)
 
             row_h = 32
-            if idx % 2 == 1:
-                draw.rectangle([(4, cur_y - 1), (WIDTH - 4, cur_y + row_h - 2)], fill=(242, 242, 242))
-            
             draw.text((14, cur_y + row_h // 2 - 1), es_clean, fill=(0, 0, 0), anchor="lm", font=f_es_cur)
             draw.text((WIDTH - 14, cur_y + row_h // 2 - 1), f"= {pt}", fill=(0, 0, 0), anchor="rm", font=f_pt_cur)
             cur_y += row_h
+
+            # Linha divisória fina de 1px entre cada linha
+            if idx < len(conjugations) - 1:
+                draw.line([(10, cur_y), (WIDTH - 10, cur_y)], fill=(0, 0, 0), width=1)
             
         return cur_y + 6
 
@@ -741,7 +742,7 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
     y = render_tense_block(y, "2. PASSADO", "Pretérito", data["past"])
     y = render_tense_block(y, "3. FUTURO", "Futuro", data["future"])
 
-    # 4. Frases de Demonstração
+    # 4. Frases de Demonstração (Tags vazadas com contorno fino - sem 'chip preto')
     draw.rectangle([(4, y), (WIDTH - 4, y + 28)], fill=(0, 0, 0))
     draw.text((14, y + 14), "FRASES DE EXEMPLO", fill=(255, 255, 255), anchor="lm", font=get_font(14, bold=True))
     y += 30
@@ -750,19 +751,20 @@ def generate_verb_strip(verb_key: str) -> Image.Image:
     font_ex_pt = get_font(15, bold=False)
 
     for idx, (tense, es_phrase, pt_phrase) in enumerate(data["examples"]):
-        bg_col = (255, 255, 255) if idx % 2 == 0 else (244, 244, 244)
-        box_h = 54
-        draw.rectangle([(4, y), (WIDTH - 4, y + box_h)], fill=bg_col)
+        box_h = 56
+        draw.rectangle([(4, y), (WIDTH - 4, y + box_h)], fill=(255, 255, 255))
         
-        draw.rounded_rectangle([(12, y + 8), (62, y + 28)], radius=4, fill=(0, 0, 0))
-        draw.text((37, y + 18), tense, fill=(255, 255, 255), anchor="mm", font=get_font(12, bold=True))
+        # Tag vazada com contorno de 1px (evita o borrão preto)
+        tag_w = 48
+        draw.rounded_rectangle([(12, y + 8), (12 + tag_w, y + 30)], radius=4, outline=(0, 0, 0), width=2, fill=(255, 255, 255))
+        draw.text((12 + tag_w // 2, y + 19), tense, fill=(0, 0, 0), anchor="mm", font=get_font(12, bold=True))
         
-        draw.text((70, y + 18), es_phrase, fill=(0, 0, 0), anchor="lm", font=font_ex_es)
-        draw.text((70, y + 39), f"= {pt_phrase}", fill=(0, 0, 0), anchor="lm", font=font_ex_pt)
+        draw.text((68, y + 19), es_phrase, fill=(0, 0, 0), anchor="lm", font=font_ex_es)
+        draw.text((68, y + 41), f"= {pt_phrase}", fill=(0, 0, 0), anchor="lm", font=font_ex_pt)
         
         y += box_h
         if idx < len(data["examples"]) - 1:
-            draw.line([(12, y), (WIDTH - 12, y)], fill=(200, 200, 200), width=1)
+            draw.line([(10, y), (WIDTH - 10, y)], fill=(0, 0, 0), width=1)
 
     y += 4
     draw.rectangle([(4, card_start_y), (WIDTH - 4, y)], outline=(0, 0, 0), width=3)
