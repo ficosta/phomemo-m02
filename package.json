@@ -1,0 +1,27 @@
+{
+  "name": "phomemo-m02",
+  "version": "1.0.0",
+  "description": "Driver e utilitário CLI para impressoras térmicas Phomemo M02 (Node.js & Python) via Bluetooth Serial (RFCOMM / ESC-POS)",
+  "main": "phomemo.js",
+  "bin": {
+    "phomemo": "./phomemo.js"
+  },
+  "scripts": {
+    "print:text": "node phomemo.js text",
+    "print:logo": "node phomemo.js image setup_news_logo.png"
+  },
+  "keywords": [
+    "phomemo",
+    "m02",
+    "thermal-printer",
+    "bluetooth",
+    "esc-pos",
+    "serialport"
+  ],
+  "author": "Felipe Iasi <felipeiasi@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "serialport": "^13.0.0",
+    "sharp": "^0.33.5"
+  }
+}

@@ -1,79 +1,93 @@
-# Phomemo M02 - Driver & CLI em Python
+# Phomemo M02 - Driver & CLI (Node.js & Python)
 
-Driver nativo e utilitário de linha de comando para impressoras térmicas portáteis **Phomemo M02** no Windows, comunicando-se via Bluetooth (perfil Serial RFCOMM / ESC-POS).
+Driver nativo e utilitário de linha de comando para impressoras térmicas portáteis **Phomemo M02** (203 DPI, 384 pixels / 48 bytes por linha) no Windows via Bluetooth Serial (RFCOMM / ESC-POS).
 
-## Características
-
-* **Compatibilidade nativa:** Funciona diretamente via porta serial Bluetooth do Windows (ex: `COM6`).
-* **Resolução nativa:** 203 DPI (384 dots de largura por linha, 48 bytes/linha).
-* **Processamento de imagem inteligente:** Redimensionamento proporcional automático e dithering Floyd-Steinberg para ótima reprodução de tons em preto e branco.
-* **Quebra de linha de texto automática:** Ajusta parágrafos e textos longos para a largura exata da fita térmica.
-* **Suporte a QR Codes:** Gera e centraliza QR codes com legendas opcionais.
-* **Cartão de calibração incluso:** Permite testar a uniformidade da queima térmica, escala de cinzas e resolução.
+Disponível tanto em **Node.js** quanto em **Python**!
 
 ---
 
-## Instalação
+## 🚀 Versão Node.js
 
-Clone o repositório e instale as dependências:
+### Instalação
+```bash
+npm install
+```
+
+### Uso via Linha de Comando (CLI)
 
 ```bash
-git clone https://github.com/.../phomemo-m02.git
-cd phomemo-m02
+# Imprimir texto
+node phomemo.js text "Comprar café e pão" --title "Lista de Compras"
+
+# Imprimir qualquer imagem (PNG, JPG, WebP)
+node phomemo.js image setup_news_logo.png
+```
+
+### Uso como Biblioteca / Módulo Node.js
+
+```javascript
+const { PhomemoM02 } = require('./phomemo');
+
+async function main() {
+  const printer = new PhomemoM02();
+  await printer.connect();
+
+  // Imprime texto formatado com quebra automática
+  await printer.printText('Olá mundo do Node.js!', { title: 'Aviso' });
+
+  // Imprime imagem (caminho de arquivo ou Buffer)
+  await printer.printImage('setup_news_logo.png');
+
+  await printer.close();
+}
+
+main();
+```
+
+---
+
+## 🐍 Versão Python
+
+### Instalação
+```bash
 pip install -r requirements.txt
 ```
 
----
+### Uso via Linha de Comando (CLI)
 
-## Como usar via Linha de Comando (CLI)
-
-### 1. Imprimir texto ou notas
 ```bash
-python phomemo.py text "Comprar café, pão e leite." --title "Lista de Compras"
-```
-* Parâmetros opcionais:
-  * `--title "Meu Título"`: Adiciona um cabeçalho destacado.
-  * `--font-size 26`: Altera o tamanho da fonte (padrão: 22).
+# Imprimir texto
+python phomemo.py text "Seu texto aqui" --title "Título"
 
-### 2. Imprimir imagens e fotos (PNG, JPG, BMP)
-```bash
-python phomemo.py image "caminho/para/imagem.png"
-```
+# Imprimir imagem
+python phomemo.py image setup_news_logo.png
 
-### 3. Imprimir QR Code
-```bash
-python phomemo.py qr "https://github.com" --caption "Acesse nosso site"
-```
+# Imprimir QR Code
+python phomemo.py qr "https://setup.news" --caption "setup.news"
 
-### 4. Executar folha de calibração
-```bash
+# Folha de calibração de tons de cinza e resolução
 python calibration_test.py
 ```
 
----
-
-## Como usar como biblioteca Python
+### Uso como Biblioteca Python
 
 ```python
 from phomemo import PhomemoM02
 
-# Conecta automaticamente à porta da Phomemo (detectada via Bluetooth)
 with PhomemoM02() as printer:
-    # Imprime texto formatado
-    printer.print_text("Olá mundo térmico!", title="Aviso")
-
-    # Imprime um QR Code
-    printer.print_qr("https://seusite.com", caption="Escaneie aqui")
-
-    # Imprime uma imagem (arquivo no disco ou objeto PIL Image)
-    printer.print_image("recibo.png")
+    printer.print_text("Olá do Python!", title="Notificação")
+    printer.print_image("setup_news_logo.png")
 ```
 
 ---
 
-## Configuração do Bluetooth no Windows
+## ⚙️ Conexão Bluetooth no Windows
 
-1. Ligue a Phomemo M02 (luz verde/azul acesa).
-2. Vá em **Configurações do Windows > Dispositivos > Bluetooth**.
-3. Adicione um novo dispositivo Bluetooth e selecione a impressora (`Mr.in_M02` ou `Phomemo`).
-4. O Windows criará automaticamente uma porta serial virtual (ex: `COM6`). O script detecta essa porta automaticamente.
+1. Ligue a Phomemo M02 (botão power).
+2. Vá em **Configurações do Windows > Bluetooth > Adicionar dispositivo** e pareie a impressora (`Mr.in_M02`).
+3. O Windows cria automaticamente uma porta serial virtual (ex: `COM6`). Ambos os drivers detectam a porta automaticamente.
+
+---
+
+## 📄 Licença
+MIT © Felipe Iasi
