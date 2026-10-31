@@ -33,9 +33,18 @@ class PhomemoM02:
         self.baudrate = baudrate
         self.ser: Optional[serial.Serial] = None
 
-    def connect(self):
+    def connect(self, retries: int = 3):
         if not self.ser or not self.ser.is_open:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=3.0, write_timeout=5.0)
+            last_err = None
+            for attempt in range(1, retries + 1):
+                try:
+                    self.ser = serial.Serial(self.port, self.baudrate, timeout=3.0, write_timeout=5.0)
+                    return self
+                except Exception as e:
+                    last_err = e
+                    if attempt < retries:
+                        time.sleep(1.0)
+            raise last_err
         return self
 
     def close(self):
